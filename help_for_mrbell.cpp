@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 
+// contact class
 class Contact {
 
     public:
@@ -29,6 +30,7 @@ class Contact {
         string power;
 };
 
+// phonebook class
 class PhoneBook {
 
     public:
@@ -63,7 +65,7 @@ class PhoneBook {
             }
             cout << "List of Contacts:" << endl;
             for (int i = 0; i < contact_size; i++) {
-                cout << contacts[i].getContactName() + "\n" << endl;
+                cout << contacts[i].getContactName() << endl;
             }
         }
 
@@ -107,3 +109,58 @@ class PhoneBook {
         Contact contacts[8];
         int add_count;
 };
+
+int main() {
+        PhoneBook phoneBook;
+        string command;
+
+        cout << "Welcome to Mr. Bell's PhoneBook! Are you ready to help Mr. Bell?!" << endl;
+        cout << "Commands: ADD, SEARCH, EXIT." << endl;
+
+        while (true) {
+            cout << "\nEnter command: ";
+            cin >> command;
+            cin.ignore();
+
+            // add command
+            if (command == "ADD") {
+                string name, address, residence, power;
+
+                cout << "Enter name: ";
+                getline(cin, name);
+                cout << "Enter residence: ";
+                getline(cin, address);
+                cout << "Enter address: ";
+                getline(cin, address);
+                cout << "Enter power: ";
+                getline(cin, power);
+
+                phoneBook.addContact(name, residence, address, power);
+            }
+
+            // search command
+            else if (command == "SEARCH") {
+                phoneBook.displayAllContacts();
+
+                cout << "\nEnter the name of the contact to view details: ";
+                string searchName;
+                getline(cin, searchName);
+
+                phoneBook.searchContact(searchName);
+            }
+            
+            // exit command
+            else if (command == "EXIT") {
+                phoneBook.clearContacts();
+                cout << "Exiting program. Goodbye!" << endl;
+                break;
+
+            } 
+            
+            // invalid command
+            else {
+                cout << "Invalid command. Please try again." << endl;
+            }
+        }
+    return 0;
+}
