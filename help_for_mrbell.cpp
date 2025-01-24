@@ -2,6 +2,12 @@
 #include <string>
 using namespace std;
 
+// ANSI Escape Codes for colored text
+#define RESET   "\033[0m"
+#define RED     "\033[31m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+
 // contact class
 class Contact {
 
@@ -20,7 +26,7 @@ class Contact {
             if (name == contact_name) {
                 return "Name: " + name + "\nResidence: " + residence + "\nAddress: " + address + "\nPower: " + power;
             }
-            return "Contact not found.";
+            return RED "[ERROR] " RESET "Contact not found.";
         }
 
     private:
@@ -44,16 +50,16 @@ class PhoneBook {
             }
             else {
                 contacts[add_count % 8]  = Contact(contact_name, contact_residence, contact_address, contact_power);
-                cout << "PhoneBook is Full. Oldest contact replaced." << endl;
+                cout << YELLOW "[WARNING] " RESET "PhoneBook is Full. Oldest contact replaced." << endl;
             }
             add_count++;
-            cout << "Contact added succesfully!" << endl;
+            cout << BLUE "[INFO] " RESET "Contact added successfully!" << endl;
         }
 
         // function to display all contacts
         void displayAllContacts() const {
             if (add_count == 0) {
-                cout << "PhoneBook still empty. Add contact first!" << endl;
+                cout << RED "[ERROR] " RESET "PhoneBook still empty. Add contact first!" << endl;
                 return;
             }
             int contact_size;
@@ -63,7 +69,7 @@ class PhoneBook {
             else {
                 contact_size = 8;
             }
-            cout << "List of Contacts:" << endl;
+            cout << BLUE "[INFO] " RESET "List of Contacts:" << endl;
             for (int i = 0; i < contact_size; i++) {
                 cout << contacts[i].getContactName() << endl;
             }
@@ -84,7 +90,7 @@ class PhoneBook {
                     return;
                 }
             }
-            cout << "Contact not found." << endl;
+            cout << RED "[ERROR] " RESET "Contact not found." << endl;
         }
 
         // function to remove saved data
@@ -102,7 +108,7 @@ class PhoneBook {
 
             contact_size = 0;
             add_count = 0;
-            cout << "All saved contacts have been removed." << endl;
+            cout << YELLOW "[WARNING] " RESET "All saved contacts have been removed." << endl;
         }
 
     private:
@@ -114,8 +120,8 @@ int main() {
         PhoneBook phoneBook;
         string command;
 
-        cout << "Welcome to Mr. Bell's PhoneBook! Are you ready to help Mr. Bell?!" << endl;
-        cout << "Commands: ADD, SEARCH, EXIT." << endl;
+        cout << BLUE "[INFO] " RESET "Welcome to Mr. Bell's PhoneBook! Are you ready to help Mr. Bell?!" << endl;
+        cout << BLUE "[INFO] " RESET "Commands: ADD, SEARCH, EXIT." << endl;
 
         while (true) {
             cout << "\nEnter command: ";
@@ -126,14 +132,41 @@ int main() {
             if (command == "ADD") {
                 string name, address, residence, power;
 
-                cout << "Enter name: ";
-                getline(cin, name);
-                cout << "Enter residence: ";
-                getline(cin, address);
-                cout << "Enter address: ";
-                getline(cin, address);
-                cout << "Enter power: ";
-                getline(cin, power);
+                // input validation for name
+                do {
+                    cout << "Enter name: ";
+                    getline(cin, name);
+                    if (name.empty()) {
+                        cout << RED "[ERROR] " RESET "Name cannot be empty. Please enter a valid name." << endl;
+                    }
+                } while (name.empty());
+
+                // input validation for residence
+                do {
+                    cout << "Enter residence: ";
+                    getline(cin, residence);
+                    if (residence.empty()) {
+                        cout << RED "[ERROR] " RESET "Residence cannot be empty. Please enter a valid residence." << endl;
+                    }
+                } while (residence.empty());
+
+                // input validation for address
+                do {
+                    cout << "Enter address: ";
+                    getline(cin, address);
+                    if (address.empty()) {
+                        cout << RED "[ERROR] " RESET "Address cannot be empty. Please enter a valid address." << endl;
+                    }
+                } while (address.empty());
+
+                // input validation for power
+                do {
+                    cout << "Enter power: ";
+                    getline(cin, power);
+                    if (power.empty()) {
+                        cout << RED "[ERROR] " RESET "Power cannot be empty. Please enter a valid power." << endl;
+                    }
+                } while (power.empty());
 
                 phoneBook.addContact(name, residence, address, power);
             }
@@ -152,14 +185,14 @@ int main() {
             // exit command
             else if (command == "EXIT") {
                 phoneBook.clearContacts();
-                cout << "Exiting program. Goodbye!" << endl;
+                cout << BLUE "[INFO] " RESET "Exiting program. Goodbye!" << endl;
                 break;
 
             } 
             
             // invalid command
             else {
-                cout << "Invalid command. Please try again." << endl;
+                cout << RED "[ERROR] " RESET "Invalid command. Please try again." << endl;
             }
         }
     return 0;
